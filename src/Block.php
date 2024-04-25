@@ -124,8 +124,7 @@ abstract class Block implements Arrayable
     protected static function determineType(): string
     {
         return Str::of(class_basename(static::class))
-            ->replaceEnd('ContentBlock', '')
-            ->replaceEnd('Block', '')
-            ->snake('-');
+            ->snake('-')
+            ->replaceMatches('/(\-block|\-content\-block)$/', '');
     }
 }
