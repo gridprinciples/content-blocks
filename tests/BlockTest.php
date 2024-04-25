@@ -9,7 +9,7 @@ class BlockTest extends TestCase
 {
     public function test_blocks_can_be_initialized(): void
     {
-        $block = new ExampleContentBlock(1); // a Fake ID
+        $block = new ExampleContentBlock; // a Fake ID
 
         $this->assertNotEmpty($block->getID());
     }
@@ -17,7 +17,6 @@ class BlockTest extends TestCase
     public function test_blocks_can_be_initialized_with_data_and_options(): void
     {
         $block = new ExampleContentBlock(
-            1,
             data: [
                 'title' => 'Hello, World!',
             ],
@@ -26,8 +25,7 @@ class BlockTest extends TestCase
             ]
         );
 
-        $this->assertEquals(1, $block->getID());
-        $this->assertEquals('example', $block->getType());
+        $this->assertEquals('my-example', $block->getType());
 
         $this->assertIsArray($block->getOptions());
         $this->assertArrayHasKey('title', $block->getData());
@@ -41,7 +39,6 @@ class BlockTest extends TestCase
     public function test_blocks_can_be_initialized_by_array(): void
     {
         $block = ExampleContentBlock::make([
-            'id' => 1,
             'data' => [
                 'title' => 'Hello, World!',
             ],
@@ -50,8 +47,7 @@ class BlockTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals(1, $block->getID());
-        $this->assertEquals('example', $block->getType());
+        $this->assertEquals('my-example', $block->getType());
 
         $this->assertIsArray($block->getOptions());
         $this->assertArrayHasKey('title', $block->getData());
@@ -64,11 +60,11 @@ class BlockTest extends TestCase
 
     public function test_type_is_determined_from_class(): void
     {
-        $block = new ExampleContentBlock(1);
+        $block = new ExampleContentBlock;
 
-        $this->assertEquals('example', $block->getType());
+        $this->assertEquals('my-example', $block->getType());
 
-        $block = new SuperDuperBlock(1);
+        $block = new SuperDuperBlock;
 
         $this->assertEquals('super-duper', $block->getType());
     }

@@ -9,10 +9,10 @@ use Illuminate\Support\Str;
 
 abstract class Block implements Arrayable
 {
-    public static ?string $type = null;
+    public $type = null;
 
     public function __construct(
-        public string | int | array $id,
+        public string | int | array | null $id = null,
         public array $data = [],
         public array $options = [],
     ) {
@@ -21,14 +21,18 @@ abstract class Block implements Arrayable
             $this->data = Arr::get($id, 'data', []);
             $this->options = Arr::get($id, 'options', []);
         }
+
+        if (! $this->id) {
+            $this->id = $this->generateUniqueID();
+        }
+
+        if(! $this->type) {
+            $this->type = static::determineType();
+        }
     }
 
     public static function make(array $attributes): static
     {
-        if (! isset($attributes['id'])) {
-            throw new \InvalidArgumentException('Content block must have an ID.');
-        }
-
         if (isset($attributes['type']) && static::determineType() !== $attributes['type']) {
             $className = static::getLoadedClassFromType($attributes['type']);
         } else {
@@ -42,14 +46,14 @@ abstract class Block implements Arrayable
         );
     }
 
-    public function getID(): string | int
+    public function getID(): string | int | null
     {
         return $this->id;
     }
 
     public static function getType(): string
     {
-        return static::$type ?: static::determineType();
+        return (new static)->type;
     }
 
     public function getData(?string $key = null, mixed $default = null): mixed
@@ -126,5 +130,10 @@ abstract class Block implements Arrayable
         return Str::of(class_basename(static::class))
             ->snake('-')
             ->replaceMatches('/(\-block|\-content\-block)$/', '');
+    }
+
+    protected function generateUniqueID(): string
+    {
+        return Str::ulid(now());
     }
 }

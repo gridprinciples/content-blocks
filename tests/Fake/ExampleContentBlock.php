@@ -6,5 +6,5 @@ use GridPrinciples\ContentBlocks\Block;
 
 class ExampleContentBlock extends Block
 {
-    public static ?string $type = 'example';
+    public $type = 'my-example';
 }

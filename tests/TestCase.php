@@ -2,9 +2,10 @@
 
 namespace GridPrinciples\ContentBlocks\Tests;
 
-use GridPrinciples\ContentBlocks\ContentBlocksServiceProvider;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use GridPrinciples\ContentBlocks\ContentBlocksServiceProvider;
+use GridPrinciples\ContentBlocks\Facades\ContentBlocks;
 
 class TestCase extends Orchestra
 {
@@ -26,15 +27,6 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'testing');
-
-        config()->set('content-blocks.load_blocks_from', [
-            'GridPrinciples\\ContentBlocks\\Tests\\Fake' => __DIR__.'/Fake/*',
-        ]);
-
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_content-blocks_table.php.stub';
-        $migration->up();
-        */
+        ContentBlocks::loadBlocks('GridPrinciples\\ContentBlocks\\Tests\\Fake', __DIR__.'/Fake/*');
     }
 }
