@@ -100,10 +100,10 @@ abstract class Block implements Arrayable
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'type' => $this->type,
-            'data' => $this->data,
-            'options' => $this->options,
+            'id' => $this->getID(),
+            'type' => $this->getType(),
+            'data' => $this->getData(),
+            'options' => $this->getOptions(),
         ];
     }
 

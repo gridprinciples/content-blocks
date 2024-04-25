@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getBlocks()
+ * @method static void routePages(string|null $prefix = null)
  *
- * @see \GridPrinciples\ContentBlocks\ContentBlocks
+ * @see \GridPrinciples\ContentBlocks\BlockManager
  */
 class ContentBlocks extends Facade
 {

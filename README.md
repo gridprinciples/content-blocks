@@ -15,23 +15,21 @@ You can install the package via composer:
 composer require gridprinciples/content-blocks
 ```
 
-You can publish and run the migrations with:
+You should publish the migrations and config, then run the migrations:
 
 ```bash
-php artisan vendor:publish --tag="content-blocks-migrations"
+php artisan vendor:publish --tag="content-blocks"
 php artisan migrate
 ```
 
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="content-blocks-config"
-```
 
 This is the contents of the published config file:
 
 ```php
 return [
+    'load_blocks_from' => [
+        'App\\Blocks' => __DIR__ . '/../app/Blocks/*',
+    ],
 ];
 ```
 
