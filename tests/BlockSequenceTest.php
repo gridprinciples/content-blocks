@@ -72,4 +72,16 @@ class BlockSequenceTest extends TestCase
         $this->assertArrayHasKey(42, $sequence->toArray());
         $this->assertArrayHasKey($uuid, $sequence->toArray());
     }
+
+    public function test_block_sequence_generation_makes_ulid_keys(): void
+    {
+        $sequence = BlockSequence::make([
+            ['type' => 'my-example'],
+            ['type' => 'my-example'],
+            ['type' => 'my-example'],
+        ]);
+
+        $this->assertIsString($sequence->first()->getID());
+        $this->assertIsString($sequence->last()->getID());
+    }
 }

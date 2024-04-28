@@ -15,10 +15,6 @@ class BlockSequence extends Collection
         $items = parent::getArrayableItems($items);
 
         foreach ($items as $k => $item) {
-            if(is_array($item) && ! isset($item['id'])) {
-                $item['id'] = $k;
-            }
-
             if (is_array($item) && isset($item['type'])) {
                 $items[$k] = Block::make($item);
             }
