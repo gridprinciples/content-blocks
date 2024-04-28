@@ -6,8 +6,9 @@ use GridPrinciples\ContentBlocks\Facades\ContentBlocks;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use JsonSerializable;
 
-abstract class Block implements Arrayable
+abstract class Block implements Arrayable, JsonSerializable
 {
     public $type = null;
 
@@ -109,6 +110,11 @@ abstract class Block implements Arrayable
             'data' => $this->getData(),
             'options' => $this->getOptions(),
         ];
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 
     public static function getLoadedClassFromType(string $type): string
