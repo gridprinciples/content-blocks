@@ -2,8 +2,9 @@
 
 namespace GridPrinciples\ContentBlocks\Tests;
 
-use GridPrinciples\ContentBlocks\Tests\Fake\ExampleContentBlock;
+use GridPrinciples\ContentBlocks\Block;
 use GridPrinciples\ContentBlocks\Tests\Fake\SuperDuperBlock;
+use GridPrinciples\ContentBlocks\Tests\Fake\ExampleContentBlock;
 
 class BlockTest extends TestCase
 {
@@ -67,5 +68,18 @@ class BlockTest extends TestCase
         $block = new SuperDuperBlock;
 
         $this->assertEquals('super-duper', $block->getType());
+    }
+
+    public function test_block_keeps_custom_id_through_serialization(): void
+    {
+        $block = new ExampleContentBlock([
+            'id' => 'custom-id',
+        ]);
+
+        $this->assertEquals('custom-id', $block->getID());
+        
+        $block = Block::make($block->toArray());
+        
+        $this->assertEquals('custom-id', $block->getID());
     }
 }

@@ -33,18 +33,25 @@ class BlockSequenceTest extends TestCase
                 'id' => 2,
                 'type' => 'super-duper',
             ],
+            [
+                'id' => 'buster',
+                'type' => 'my-example',
+                'data' => ['cartography' => true],
+            ]
         ]);
 
-        $this->assertEquals(2, $sequence->count());
+        $this->assertEquals(3, $sequence->count());
         $this->assertEquals(1, $sequence->first()->getID());
-        $this->assertEquals(2, $sequence->last()->getID());
-        $this->assertEquals(2, $sequence->max('id'));
-        $this->assertEquals(1, $sequence->min('id'));
-        $this->assertEquals(3, $sequence->sum('id'));
+        $this->assertEquals('buster', $sequence->last()->getID());
         $this->assertEquals(1, $sequence->firstWhere('id', 1)->getID());
         $this->assertEquals(2, $sequence->firstWhere('id', 2)->getID());
         $this->assertNull($sequence->firstWhere('id', 3));
         $this->assertEquals(1, $sequence->where('type', 'super-duper')->count());
+        $this->assertTrue($sequence->find('buster')->getData('cartography'));
+        $this->assertTrue($sequence->has('buster'));
+        $this->assertFalse($sequence->has('not-there'));
+        $this->assertEquals(2, $sequence->forget(1)->count());
+        $this->assertEquals('buster', $sequence->move('buster', 0)->first()->getID());
 
         $this->assertEquals('super-duper', $sequence->firstWhere('id', 2)->getType());
     }

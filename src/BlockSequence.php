@@ -13,14 +13,55 @@ class BlockSequence extends Collection
         }
 
         $items = parent::getArrayableItems($items);
-
+        
         foreach ($items as $k => $item) {
+            if(is_string($k)) {
+                $item['id'] = $k;
+            }
+
             if (is_array($item) && isset($item['type'])) {
                 $items[$k] = Block::make($item);
             }
         }
 
         return array_values($items);
+    }
+
+    public function find($id)
+    {
+        return $this->firstWhere('id', $id);
+    }
+
+    public function has($id)
+    {
+        return $this->find($id) !== null;
+    }
+
+    public function forget($id)
+    {
+        $block = $this->find($id);
+
+        if ($block === null) {
+            return $this;
+        }
+
+        $this->items = array_values(array_filter($this->items, fn ($item) => $item->id !== $id));
+
+        return $this;
+    }
+
+    public function move($id, int $position)
+    {
+        $block = $this->find($id);
+
+        if ($block === null) {
+            return $this;
+        }
+
+        $this->forget($id);
+        $this->splice($position, 0, [$block]);
+
+        return $this;
     }
 
     public function toArray()
