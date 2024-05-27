@@ -1,6 +1,5 @@
 {
     "name": "gridprinciples/content-blocks",
-    "version": "0.1.0",
     "description": "Build and present reusable content blocks in Laravel applications.",
     "keywords": [
         "Grid Principles",
