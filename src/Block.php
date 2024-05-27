@@ -30,6 +30,13 @@ abstract class Block implements Arrayable, JsonSerializable
         if(! $this->type) {
             $this->type = static::determineType();
         }
+        
+        $this->boot();
+    }
+
+    protected function boot(): void
+    {
+        //
     }
 
     public static function make(array $attributes): static
@@ -100,6 +107,21 @@ abstract class Block implements Arrayable, JsonSerializable
     public function setOption(string $key, mixed $value): void
     {
         Arr::set($this->options, $key, $value);
+    }
+
+    public function setOptions(array $value): void
+    {
+        $this->options = $value;;
+    }
+
+    public function update(array $input = []): void
+    {
+        $this->updateOptions(Arr::get($input, 'options', []));
+    }
+
+    public function updateOptions(array $options = []): void
+    {
+        $this->options = array_merge($this->options, $options);
     }
 
     public function toArray(): array
