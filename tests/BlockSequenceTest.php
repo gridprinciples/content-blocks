@@ -91,4 +91,16 @@ class BlockSequenceTest extends TestCase
         $this->assertIsString($sequence->first()->getID());
         $this->assertIsString($sequence->last()->getID());
     }
+
+    public function test_block_index_can_be_pulled_from_sequence(): void
+    {
+        $sequence = new BlockSequence([
+            new ExampleContentBlock,
+            new ExampleContentBlock,
+            new ExampleContentBlock,
+        ]);
+
+        $this->assertEquals(0, $sequence->indexOf($sequence->first()));
+        $this->assertEquals(2, $sequence->indexOf($sequence->last()));
+    }
 }

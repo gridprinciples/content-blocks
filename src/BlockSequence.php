@@ -64,6 +64,41 @@ class BlockSequence extends Collection
         return $this;
     }
 
+    public function indexOf(string | int | Block | null $block): int
+    {
+        if ($block instanceof Block) {
+            return $this->indexOf($block->getID());
+        }
+
+        if (is_string($block) || is_int($block)) {
+            return array_search($block, array_map(fn ($item) => $item->id, $this->items));
+        }
+
+        return -1;
+    }
+
+    public function getBlockAfter($id)
+    {
+        $index = $this->indexOf($id);
+
+        if ($index === -1) {
+            return null;
+        }
+
+        return $this->items[$index + 1] ?? null;
+    }
+
+    public function getBlockBefore($id)
+    {
+        $index = $this->indexOf($id);
+
+        if ($index === -1) {
+            return null;
+        }
+
+        return $this->items[$index - 1] ?? null;
+    }
+
     public function toArray()
     {
         $blocks = $this->keyById(array_map(
@@ -77,6 +112,19 @@ class BlockSequence extends Collection
         }
 
         return $blocks;
+    }
+
+    public function updateBlock($id, array $data)
+    {
+        $block = $this->find($id);
+
+        if ($block === null) {
+            return $this;
+        }
+
+        $block->update($data);
+
+        return $this;
     }
 
     // Key the result by the ID generated within the class.
